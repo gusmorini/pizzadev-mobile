@@ -1,9 +1,9 @@
 import { View, Text } from "react-native";
 
-export default function SignIn() {
+export default function Dashboard() {
   return (
     <View>
-      <Text>tela de login</Text>
+      <Text>Dashboard</Text>
     </View>
   );
 }
