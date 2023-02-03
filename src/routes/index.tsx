@@ -5,7 +5,7 @@ import LoaderScreen from "../components/LoaderScreen";
 
 export default function Routes() {
   const isAuthenticated = false;
-  const loading = true;
+  const loading = false;
 
   return loading ? (
     <LoaderScreen />
