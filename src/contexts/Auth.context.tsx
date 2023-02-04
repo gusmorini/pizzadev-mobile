@@ -94,9 +94,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       // setLoadingAuth(false);
     }
 
-    setTimeout(() => {
-      setLoadingAuth(false);
-    }, 3000);
+    setLoadingAuth(false);
   }
 
   async function signOut() {
