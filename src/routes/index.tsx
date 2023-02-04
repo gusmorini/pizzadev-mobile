@@ -7,10 +7,7 @@ import LoaderScreen from "../components/LoaderScreen";
 import { AuthContext } from "../contexts/Auth.context";
 
 export default function Routes() {
-  // const isAuthenticated = false;
-  const { user, isAuthenticated } = useContext(AuthContext);
-
-  const loading = false;
+  const { loading, isAuthenticated } = useContext(AuthContext);
 
   return loading ? (
     <LoaderScreen />
