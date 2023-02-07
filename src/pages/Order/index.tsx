@@ -6,11 +6,14 @@ import {
   SafeAreaView,
   TextInput,
   View,
+  Modal,
 } from "react-native";
 
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import { api } from "../../services/api";
+
+import { ModalCategory } from "../../components/ModalPicker";
 
 type RouteDetailParams = {
   Order: {
@@ -34,6 +37,7 @@ export default function Order() {
 
   const [category, setCategory] = useState<CategoryProps[] | []>([]);
   const [categorySelected, setCategorySelected] = useState<CategoryProps>();
+  const [categoryModalVisible, setCategoryModalVisible] = useState(false);
 
   const [amount, setAmount] = useState("1");
 
@@ -70,7 +74,10 @@ export default function Order() {
       </View>
 
       <View>
-        <TouchableOpacity style={styles.input}>
+        <TouchableOpacity
+          style={styles.input}
+          onPress={() => setCategoryModalVisible(true)}
+        >
           <Text style={[styles.inputText, { textTransform: "uppercase" }]}>
             {categorySelected?.name}
           </Text>
@@ -104,6 +111,14 @@ export default function Order() {
           <Text style={[styles.inputText, styles.inputTextNext]}>Avançar</Text>
         </TouchableOpacity>
       </View>
+
+      <Modal
+        visible={categoryModalVisible}
+        animationType="fade"
+        transparent={true}
+      >
+        <ModalCategory />
+      </Modal>
     </SafeAreaView>
   );
 }
