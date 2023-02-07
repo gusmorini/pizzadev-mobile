@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { styles } from "./styles.modules";
 import {
   Text,
@@ -19,6 +19,11 @@ type RouteDetailParams = {
   };
 };
 
+type CategoryProps = {
+  id: string;
+  name: string;
+};
+
 type OrderRouteProps = RouteProp<RouteDetailParams, "Order">;
 
 export default function Order() {
@@ -27,9 +32,28 @@ export default function Order() {
 
   const { number, order_id } = route.params;
 
+  const [category, setCategory] = useState<CategoryProps[] | []>([]);
+  const [categorySelected, setCategorySelected] = useState<CategoryProps>();
+
+  const [amount, setAmount] = useState("1");
+
+  const loadInfoCategory = async () => {
+    try {
+      const { data } = await api.get("/category");
+      setCategory(data);
+      setCategorySelected(data[0]);
+    } catch (err) {
+      console.log("ERROR LOAD INFO ", err);
+    }
+  };
+
+  useEffect(() => {
+    loadInfoCategory();
+  }, []);
+
   async function closeOrder() {
     try {
-      const response = await api.delete(`/order/${order_id}`);
+      await api.delete(`/order/${order_id}`);
       navigation.goBack();
     } catch (err) {
       console.log("error close order ", err);
@@ -47,12 +71,16 @@ export default function Order() {
 
       <View>
         <TouchableOpacity style={styles.input}>
-          <Text style={styles.inputText}>Pizzas</Text>
+          <Text style={[styles.inputText, { textTransform: "uppercase" }]}>
+            {categorySelected?.name}
+          </Text>
           <AntDesign name="down" size={14} color="white" />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.input}>
-          <Text style={styles.inputText}>Pizza de frango com catupiry</Text>
+          <Text style={[styles.inputText, { textTransform: "uppercase" }]}>
+            Pizza de frango com catupiry
+          </Text>
           <AntDesign name="down" size={14} color="white" />
         </TouchableOpacity>
       </View>
@@ -62,6 +90,9 @@ export default function Order() {
         <TextInput
           keyboardType="numeric"
           style={[styles.input, styles.inputQtd]}
+          value={amount}
+          onChangeText={setAmount}
+          placeholderTextColor="#f0f0f0"
         ></TextInput>
       </View>
 
